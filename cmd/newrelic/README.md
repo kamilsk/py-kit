@@ -6,5 +6,5 @@
 $ virtualenv .virtenv
 $ v+
 $(.virtenv) pip install -r requirements.txt
-$(.virtenv) echo /transaction/id | python crawler.py scrap -u USER -p PASS -c config.yml ACCOUNT1 ACCOUNT2
+$(.virtenv) echo /transaction/id | python crawler.py -u USER -p PASS -c config.yml ACCOUNT1 ACCOUNT2
 ```

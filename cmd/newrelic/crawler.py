@@ -59,23 +59,23 @@ def scrap(username, password, config, skip, debug, accounts):
     if not skip:
         cfg = yaml.load(config)
 
-        # scrapper = Scrapper(requests.Session())
-        # scrapper.login(username, password)
+        scrapper = Scrapper(requests.Session())
+        scrapper.login(username, password)
 
         if len(accounts) == 0:
-            accounts = cfg
+            accounts = [str(dict(item)['name']) for item in list(cfg['accounts'])]
 
-        print(accounts)
-    #     for account in accounts:
-    #         current = apps.get(str(account).lower())
-    #         if current:
-    #             for app, identifier in current['apps'].iteritems():
-    #                 scrapper.get_last_n_week_csv_data(
-    #                     scrapper.TRANSACTION_URL % (current['id'], identifier),
-    #                     './report/%s' % account,
-    #                     '%s.csv' % app)
-    #         else:
-    #             print 'account %s not found' % account
+        for account in accounts:
+            current = [item for item in list(cfg['accounts']) if account.lower() == item['name'].lower()]
+            if len(current) > 0:
+                item = current[0]
+                for app in list(item['apps']):
+                    scrapper.get_last_n_week_csv_data(
+                        scrapper.TRANSACTION_URL % (item['id'], app['id']),
+                        './report/%s' % account.lower(),
+                        '%s.csv' % app['name'])
+            else:
+                print 'account %s not found' % account
     pipeline = [
         'grep -rnw ./report/*/*.csv -e "%s"',
         'awk -F "," \'{print $1"\t\t"$3}\'',
