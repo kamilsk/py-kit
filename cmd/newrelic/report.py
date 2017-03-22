@@ -40,20 +40,21 @@ class Scrapper(object):
 
 
 @click.command()
+@click.option('-c', '--config', help='yaml configuration', type=click.File(), default='config.local.yml')
 @click.option('-u', '--username', help='username', envvar='NEW_RELIC_USER')
 @click.option('-p', '--password', help='password', envvar='NEW_RELIC_PASS')
-@click.option('-c', '--config', help='yaml configuration', type=click.File())
 @click.option('--skip', help='skip download part', is_flag=True)
 @click.option('--debug', help='add verbosity', is_flag=True)
 @click.argument('accounts', nargs=-1)
-def scrap(username, password, config, skip, debug, accounts):
+def scrap(config, username, password, skip, debug, accounts):
     """
+    :param file config:
     :param str username:
     :param str password:
-    :param file config:
     :param bool skip:
     :param bool debug:
     :param list accounts:
+
     :return:
     """
     if not skip:

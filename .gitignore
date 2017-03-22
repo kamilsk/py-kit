@@ -1,3 +1,3 @@
 /cmd/newrelic/report/*
 !/cmd/newrelic/report/.gitkeep
-/cmd/newrelic/config.local.yml
+/cmd/**/config.local.yml
