@@ -1,0 +1,16 @@
+xxx: &xxx
+  database: xxx
+  port: 3306
+  user: xxx
+  raise_on_warnings: true
+
+cluster:
+- name: xxx
+  connections:
+  - <<: *xxx
+    host: xxx
+    password: xxx
+
+map:
+  ISSUE-XXX: NoRows
+  ISSUE-YYY: ZeroCount

@@ -6,5 +6,5 @@
 $ virtualenv .virtenv
 $ v+
 $(.virtenv) pip install -r requirements.txt
-$(.virtenv) python check.py -c config.yml --issue=INFRADB-123
+$(.virtenv) python check.py -c config.yml --env=prod INFRADB-123
 ```
