@@ -1,6 +1,6 @@
 > # py-kit:github
 >
-> Configure github repository.
+> Configure your github repository.
 
 ```bash
 $ virtualenv .virtenv

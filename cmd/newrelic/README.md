@@ -1,6 +1,6 @@
 > # py-kit:newrelic
 >
-> Get transactions for three months.
+> Get transactions from your New Relic accounts for three months.
 
 ```bash
 $ virtualenv .virtenv

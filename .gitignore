@@ -1,3 +1,5 @@
+/cmd/dba-qa/issue/*
+!/cmd/dba-qa/issue/.gitkeep
 /cmd/newrelic/report/*
 !/cmd/newrelic/report/.gitkeep
 /cmd/**/config.local.yml
