@@ -1,7 +1,10 @@
 import click
 import mysql.connector
 
+from mysql.connector.errors import OperationalError
+
 import os
+import sys
 import yaml
 
 
@@ -36,19 +39,21 @@ def check(config, env, debug, issues):
         assertion = (lambda q: (lambda r: r['total'] == 0))(query)
 
         for conn in item['connections']:
-            cnx = mysql.connector.connect(**dict(conn))
-            cursor = cnx.cursor(dictionary=True)
-            cursor.execute(query)
+            try:
+                cnx = mysql.connector.connect(**dict(conn))
+                cursor = cnx.cursor(dictionary=True)
+                cursor.execute(query)
 
-            for row in cursor.fetchall():
-                if not assertion(row):
-                    # TODO hard code
-                    print 'assertion for host %s fails' % conn['host']
-                    exit(1)
-                else:
-                    print 'assertion for host %s is successful' % conn['host']
+                for row in cursor.fetchall():
+                    if not assertion(row):
+                        # TODO hard code
+                        print 'assertion for host %s fails' % conn['host'], row
+                    else:
+                        print 'assertion for host %s is successful' % conn['host']
 
-            cnx.close()
+                cnx.close()
+            except OperationalError:
+                print 'assertion for host %s fails' % conn['host'], 'time out'
 
 
 if __name__ == '__main__':
