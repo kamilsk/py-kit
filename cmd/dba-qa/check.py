@@ -33,15 +33,22 @@ def check(config, env, debug, issues):
     path = os.path.dirname(os.path.realpath(__file__)) + '/issue'
     for issue in issues:
         sql = open(path + '/' + str(issue).upper() + '.sql', 'r')
-        query = sql.read()
-
-        # TODO hard code
-        assertion = (lambda q: (lambda r: r['total'] == 0))(query)
+        queries = sql.read().split(';')
 
         for conn in item['connections']:
             try:
                 cnx = mysql.connector.connect(**dict(conn))
                 cursor = cnx.cursor(dictionary=True)
+
+                if len(queries) > 1:
+                    for query in queries[:-1]:
+                        cursor.execute(query)
+
+                query = queries[-1]
+
+                # TODO hard code
+                assertion = (lambda q: (lambda r: r['total'] == 0))(query)
+
                 cursor.execute(query)
 
                 for row in cursor.fetchall():
