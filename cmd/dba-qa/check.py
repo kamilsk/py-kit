@@ -4,20 +4,17 @@ import mysql.connector
 from mysql.connector.errors import OperationalError
 
 import os
-import sys
 import yaml
 
 
 @click.command()
 @click.option('-c', '--config', help='yaml configuration', type=click.File(), default='config.local.yml')
 @click.option('-e', '--env', help='environment', default='staging')
-@click.option('--debug', help='add verbosity', is_flag=True)
 @click.argument('issues', nargs=-1)
-def check(config, env, debug, issues):
+def check(config, env, issues):
     """
     :param file config:
     :param str env:
-    :param bool debug:
     :param list issues:
 
     :return:
