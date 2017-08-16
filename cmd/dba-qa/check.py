@@ -1,7 +1,7 @@
 import click
 import mysql.connector
 
-from mysql.connector.errors import OperationalError
+from mysql.connector.errors import DatabaseError, OperationalError
 
 import os
 import yaml
@@ -58,6 +58,8 @@ def check(config, env, issues):
                 cnx.close()
             except OperationalError:
                 print 'assertion for host %s fails' % conn['host'], 'time out'
+            except DatabaseError, err:
+                print 'database error "%s" at host %s' % err.message, conn['host'],
 
 
 if __name__ == '__main__':
