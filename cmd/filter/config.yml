@@ -5,13 +5,9 @@ xxx: &xxx
   user: xxx
   raise_on_warnings: true
 
-environments:
+cluster:
 - name: xxx
   connections:
   - <<: *xxx
     host: xxx
     password: xxx
-
-map:
-  ISSUE-XXX: NoRows
-  ISSUE-YYY: ZeroCount

@@ -55,6 +55,7 @@ def check(config, env, issues):
                     else:
                         print 'assertion for host %s is successful' % conn['host']
 
+                cursor.close()
                 cnx.close()
             except OperationalError:
                 print 'assertion for host %s fails' % conn['host'], 'time out'
