@@ -35,7 +35,7 @@ def check(config, env, issues):
         for conn in item['connections']:
             try:
                 cnx = mysql.connector.connect(**dict(conn))
-                cursor = cnx.cursor(dictionary=True)
+                cursor = cnx.cursor(buffered=True, dictionary=True)
 
                 if len(queries) > 1:
                     for query in queries[:-1]:
@@ -59,7 +59,7 @@ def check(config, env, issues):
             except OperationalError:
                 print 'assertion for host %s fails' % conn['host'], 'time out'
             except DatabaseError, err:
-                print 'database error "%s" at host %s' % err.message, conn['host'],
+                print 'database error "%s" at host %s' % (err, conn['host'])
 
 
 if __name__ == '__main__':
