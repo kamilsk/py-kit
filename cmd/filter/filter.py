@@ -5,6 +5,7 @@ from mysql.connector.errors import DatabaseError, OperationalError
 
 import os
 import sys
+import time
 import yaml
 
 
@@ -45,17 +46,25 @@ def filter(config, env, host, issues):
     assertion = (lambda q: (lambda r: r is None))(query)
 
     for line in sys.stdin:
-        line = line.strip()
-        try:
-            cursor.execute(query, [line])
-            if assertion(cursor.fetchone()):
-                print line
-        except OperationalError:
-            print 'assertion for host %s fails' % con['con'], 'time out'
-            exit(1)
-        except DatabaseError, err:
-            print 'database error "%s" at host %s' % (err, con['host'])
-            exit(1)
+        while True:
+            line = line.strip()
+            try:
+                cursor.execute(query, [line])
+                if assertion(cursor.fetchone()):
+                    print line
+                break
+            except DatabaseError:
+                cursor.close()
+                cnx.close()
+            while True:
+                try:
+                    time.sleep(1)
+                    cnx = mysql.connector.connect(**dict(con))
+                    cursor = cnx.cursor(buffered=True, dictionary=True)
+                    break
+                except DatabaseError:
+                    cursor.close()
+                    cnx.close()
 
     cursor.close()
     cnx.close()
