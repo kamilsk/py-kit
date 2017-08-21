@@ -1,7 +1,7 @@
 import click
 import mysql.connector
 
-from mysql.connector.errors import DatabaseError, OperationalError
+from mysql.connector.errors import DatabaseError, InterfaceError, OperationalError
 
 import os
 import sys
@@ -53,7 +53,7 @@ def filter(config, env, host, issues):
                 if assertion(cursor.fetchone()):
                     print line
                 break
-            except DatabaseError:
+            except (DatabaseError, InterfaceError):
                 cursor.close()
                 cnx.close()
             while True:
@@ -62,7 +62,7 @@ def filter(config, env, host, issues):
                     cnx = mysql.connector.connect(**dict(con))
                     cursor = cnx.cursor(buffered=True, dictionary=True)
                     break
-                except DatabaseError:
+                except (DatabaseError, InterfaceError):
                     cursor.close()
                     cnx.close()
 
